@@ -1,0 +1,40 @@
+FROM adoptopenjdk:11.0.10_9-jdk-openj9-0.24.0
+
+# update apt and install wget, unzip and SPC
+RUN apt-get update \
+    && apt upgrade -y \
+    && apt install -y wget \
+    && apt install -y unzip \
+    && apt install -y software-properties-common 
+
+# install maven and git
+RUN apt update -y \
+    && apt install -y maven \
+    && apt install -y git
+
+# JDK 8
+RUN wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | apt-key add - \
+    && add-apt-repository --yes https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/ \
+    && apt update \
+    && apt install adoptopenjdk-8-hotspot -y
+
+# URCAP
+ARG URCAP_SDK=1.11.0
+RUN cd /opt \
+    && rm -rf /opt/sdk-${URCAP_SDK}* \
+    && wget https://urplus-developer-site.s3-eu-west-1.amazonaws.com/sdk/sdk-${URCAP_SDK}.zip \
+    && mkdir sdk-${URCAP_SDK} && cd sdk-${URCAP_SDK} \
+    && unzip ../sdk-${URCAP_SDK}.zip \
+    && cat  ./install.sh | sed -e 's/\<sudo\>//g'> ./install_no_sudo.sh \
+    && chmod +x ./install_no_sudo.sh \
+    && apt update \
+    && apt install -y dialog \
+    && apt install -y sshpass \
+    && apt install -y python \
+    && apt install -y ant \
+    && yes | ./install_no_sudo.sh
+
+RUN cd /opt/sdk-${URCAP_SDK} \
+    && mkdir /root/workspace/ \
+    && cp newURCap.sh /root/workspace/ \
+    && cd /opt && rm -rf /opt/sdk-${URCAP_SDK}*

@@ -1,0 +1,39 @@
+version: "3"
+
+services:
+    urcap:
+        build:
+            context: ./.urcap/
+            args:
+                - URCAP_SDK
+        env_file:
+            - .env
+        volumes:
+            - workspace:/root/workspace
+            - ursim:/root/ursim
+            - urcap-user:/root
+        tty: true
+    ursim:
+        build:
+            context: ./.ursim/
+            args:
+                - TZ
+                - ROBOT_MODEL
+                - TAR_GZ_URSIM_URL
+        ports: 
+            - 8080:8080
+            - 33890:3389
+            - 502:502
+            - 29999:29999
+            - 30001-30004:30001-30004
+        env_file:
+            - .env
+        volumes:
+            - ./shared-folder/ursim:/ursim/programs/shared
+            - ursim:/ursim
+        privileged: true
+        cpus: 1
+volumes:
+    ursim:
+    workspace:
+    urcap-user:
