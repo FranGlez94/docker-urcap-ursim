@@ -97,8 +97,6 @@ bash ./newURCap.sh
 ```
 Fill up the data its asking, after that you will get clean URCap project ready. 
 
----
-
 
 ## 3.2.3 Testing directly into URSim container_
 On _"pom.xml"_ Change _"ursim.home"_ entry like this:
