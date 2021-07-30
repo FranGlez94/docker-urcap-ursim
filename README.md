@@ -98,7 +98,7 @@ bash ./newURCap.sh
 Fill up the data its asking, after that you will get clean URCap project ready. 
 
 
-## 3.2.3 Testing directly into URSim container_
+## 3.2.3 Testing directly into URSim container
 On _"pom.xml"_ Change _"ursim.home"_ entry like this:
 ```xml
 <!--Install path for the UR Sim-->
@@ -106,7 +106,6 @@ On _"pom.xml"_ Change _"ursim.home"_ entry like this:
 ```
 
 Then run the command:
-
 ```cmd
 mvn clean install -P ursim
 ```
